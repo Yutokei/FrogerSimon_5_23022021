@@ -1,0 +1,12 @@
+.camera-item
+{
+    width: 25rem;
+}
+footer
+{
+    box-sizing: none;
+}
+#camera-specifics
+{
+    font-size: larger;
+}
