@@ -2,6 +2,7 @@ const catalog = document.getElementById('catalog');
 
 let cameras;
 
+
 //API REQUEST
 const fetchCameras = async() => {
     cameras = await fetch(
@@ -38,3 +39,5 @@ showCameras();
 function spacedNumber(x){
 	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
+
+

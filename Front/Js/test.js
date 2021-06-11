@@ -26,18 +26,30 @@ const showSpecifics = async() => {
             </div>
             <div class="col-3 align-self-center d-flex flex-column ">
                 <p class="my-4">${cameras.description}</p>
-                <select id="camera-lenses" class="form-select" aria-label="Default select example">
+                <select id="select" class="form-select" aria-label="Default select example">
                     <option selected>Selectionner votre lentille</option>
                     <option>${cameras.lenses[1]}</option>
                 </select>
                 <span class="text-center my-4">${spacedNumber(cameras.price)} €</span>
+                <button type="button" class="btn btn-outline-info camera-buy mx-1">Je l'ajoute au panier</button>
             </div>
         </div>
       `
       )
     )
+    lensesOption.innerHTML = (
+        
+        cameras.lenses.map(camera => (
+            `
+            <option>${camera.lenses}</option>
+            `
+        )))
     console.log(cameras.lenses);
-    /*cameraLenses = cameras.lenses;
+    /*
+    
+    
+    
+    cameraLenses = cameras.lenses;
     for (let lenses of cameraLenses){
         cameraLenses.push(document.createElement("span"));
         cameraLenses[cameraLenses.length-1].textContent = lenses;
@@ -53,19 +65,31 @@ const showSpecifics = async() => {
         element.appendChild(tag)
         );*/
 };
-
 showSpecifics();
 
 function spacedNumber(x){
 	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
+class CameraSpecifics{
+    constructor(jsonSpec){
+        camera.lenses && Object.assign(this, camera.lenses);
+    }
+}
 
-// local storage
-const numberOfProduct = ((localStorage.getItem(id)) + 1)
-const basket = 
-   document.getElementById("camera-buy").addEventListener("click", function() {
-    localStorage.setItem((localStorage.length + 1), id);
-    alert(`${cameras.name} ajouté au panier`);
-  });
-  console.log(localStorage.length);
+fetch('http://localhost:3000/api/cameras/' + id)
+    .then (data => data.json())
+    {
+        for(let lense of data.lenses){
+            let spec = new CameraSpecifics(jsonSpec)
+            document.querySelector(".test").innerHTML +=    `
+                                                            <select id="select" class="form-select" aria-label="Default select example">
+                                                                <option selected>Selectionner votre lentille</option>
+                                                                <option>${cameras.lenses}</option>
+                                                            </select> 
+                                                            `  
+        }
+    };
+
+
+
