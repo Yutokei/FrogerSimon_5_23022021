@@ -1,6 +1,5 @@
-const catalog = document.getElementById('catalog');
 
-let cameras;
+/*let cameras;
 
 
 //API REQUEST
@@ -13,7 +12,6 @@ const fetchCameras = async() => {
           alert(err.message);
       });
     };
-
 const showCameras = async() => {
     await fetchCameras();
 
@@ -38,9 +36,4 @@ const showCameras = async() => {
 };
 
 showCameras();
-
-function spacedNumber(x){
-	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-}
-
-
+*/

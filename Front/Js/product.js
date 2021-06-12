@@ -10,6 +10,9 @@ let cameraLenses;
 const fetchCameraSpecifics = async() => {
     cameras = await fetch('http://localhost:3000/api/cameras/' + id)
     .then(res => res.json())
+    .catch(err=>{
+        alert(err.message);
+    })
 };
 
 const showSpecifics = async() => {
@@ -28,7 +31,7 @@ const showSpecifics = async() => {
                 <p class="my-4">${cameras.description}</p>
                 <select id="camera-lenses" class="form-select" aria-label="Default select example">
                     <option selected>Selectionner votre lentille</option>
-                    <option>${cameras.lenses[1]}</option>
+
                 </select>
                 <span class="text-center my-4">${spacedNumber(cameras.price)} €</span>
             </div>
@@ -36,36 +39,31 @@ const showSpecifics = async() => {
       `
       )
     )
-    console.log(cameras.lenses);
-    /*cameraLenses = cameras.lenses;
-    for (let lenses of cameraLenses){
-        cameraLenses.push(document.createElement("span"));
-        cameraLenses[cameraLenses.length-1].textContent = lenses;
-        cameraLenses.className = "element";
-        document.querySelector("#test-lensesOption").appendChild(cameraLenses[cameraLenses.length-1]);
-    }
-    */
-    /*cameras.lenses.forEach(element => document
-        .createTextNode(element)
-        .createElement("option")
-        .getElementById("camera-lenses"),
-        tag.appendChild(text),
-        element.appendChild(tag)
-        );*/
+
+
+        //lense Option
+    var selectLense = document.getElementById("camera-lenses");
+    var lensesOptions = cameras.lenses;
+    for(var i = 0; i < lensesOptions.length; i++)
+        {
+        var lense = lensesOptions[i];
+        var createOption = document.createElement("option");
+        createOption.textContent = lense;
+        createOption.value = lense;
+        selectLense.appendChild(createOption);
+        } 
 };
 
 showSpecifics();
 
+//Create a space for the Thousand
 function spacedNumber(x){
 	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
-
-
 // local storage
-const numberOfProduct = ((localStorage.getItem(id)) + 1)
+const randomKey = Math.random();
 const basket = 
    document.getElementById("camera-buy").addEventListener("click", function() {
-    localStorage.setItem((localStorage.length + 1), id);
+    localStorage.setItem(id, id);
     alert(`${cameras.name} ajouté au panier`);
   });
-  console.log(localStorage.length);

@@ -1,3 +1,9 @@
+body
+{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 .camera-item
 {
     width: 25rem;
@@ -5,6 +11,7 @@
 footer
 {
     box-sizing: none;
+    margin-top: auto;
 }
 #camera-specifics
 {
