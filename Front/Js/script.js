@@ -1,5 +1,6 @@
+//get the html tag to inject the cameras cards
 const catalog = document.getElementById('catalog');
-
+//initialise cameras data 
 let cameras;
 
 
@@ -17,6 +18,7 @@ const fetchCameras = async() => {
 const showCameras = async() => {
     await fetchCameras();
 
+//inject cameras data into html
     catalog.innerHTML = (
 
         cameras.map(camera => (
@@ -36,9 +38,9 @@ const showCameras = async() => {
             ))
     )
 };
-
 showCameras();
 
+//split the number into thousands
 function spacedNumber(x){
 	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }

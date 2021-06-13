@@ -39,9 +39,7 @@ const CART = {
             if(arr && arr[0]){
                 let obj = {
                     id: arr[0].id,
-                    title: arr[0].title,
                     qty: 1,
-                    itemPrice: arr[0].price
                 };
                 CART.contents.push(obj);
                 //update localStorage
@@ -58,20 +56,6 @@ const CART = {
             if(item.id === id)
                 item.qty = item.qty + qty;
             return item;
-        });
-        //update localStorage
-        CART.sync()
-    },
-    reduce(id, qty=1){
-        //reduce the quantity of an item in the cart
-        CART.contents = CART.contents.map(item=>{
-            if(item.id === id)
-                item.qty = item.qty - qty;
-            return item;
-        });
-        CART.contents.forEach(async item=>{
-            if(item.id === id && item.qty === 0)
-                await CART.remove(id);
         });
         //update localStorage
         CART.sync()
