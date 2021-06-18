@@ -4,21 +4,14 @@ const catalog = document.getElementById('catalog');
 let cameras;
 
 
-//API REQUEST
-const fetchCameras = async() => {
-    cameras = await fetch(
-        'http://localhost:3000/api/cameras'
-    )
-        .then(res => res.json())
-        .catch(err=>{
-          alert(err.message);
-      });
-    };
 
+// API Request for all cameras
 const showCameras = async() => {
-    await fetchCameras();
+try{  
+  const response = await fetch('http://localhost:3000/api/cameras/')
+  const cameras = await response.json();
 
-//inject cameras data into html
+//Inject cameras data into html
     catalog.innerHTML = (
 
         cameras.map(camera => (
@@ -37,6 +30,10 @@ const showCameras = async() => {
               `
             ))
     )
+  }
+    catch(err){
+      alert(err.message);
+   }
 };
 showCameras();
 

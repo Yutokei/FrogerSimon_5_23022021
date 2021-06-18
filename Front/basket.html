@@ -26,22 +26,16 @@
               </nav>
         </header>
         <h1 class="text-center my-5">Votre Panier <i class="bi bi-camera-fill"></i></h1>
-        <main class="container text-center">
-            <ul class="row d-flex justify-content-center" id="basket-content">
+        <main class="container text-center" id="basket">
+            <ul class="row d-flex justify-content-center list-unstyled" id="basket-content">
 
-              <li class="d-flex justify-content-around border rounded">
-                <div class="border">
-                  <span class="camera-name">Zurs blabla</span>
-                  <img src="http://localhost:3000/images/vcam_1.jpg" width="60px" alt="">
-                </div>
-                <span class="camera-price border align-self-center fw-bold">30 000€</span>
-                <button class="camera-remove btn btn-outline-danger">Supprimer</button>
-              </li>
 
             </ul>
-            <a class="btn btn-primary align-self-center">Je valide ma commande</a>
+            <form class="d-flex flex-column align-items-center" id="orderForm"> 
+
+            </form>
         </main>
-        <footer class="container-fluid navbar-light bg-light bg-gradient text-center mt-auto">
+        <footer class="container-fluid navbar-light bg-light bg-gradient text-center mt-5">
           <ul class="navbar-light bg-light bg-gradient list-unstyled">
             <li><a class="btn btn-outline-primary" href="mailto:oricam@orinico.fr">Nous contacter</a></li>
           </ul>
