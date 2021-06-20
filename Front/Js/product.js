@@ -9,29 +9,28 @@ let cameraLenses;
 
 
 //API Request for specific camera
-
 const showSpecifics = async() => {
 try{       
     const response = await fetch('http://localhost:3000/api/cameras/' + id)
     const camera = await response.json();
 
-    //lense Option
+    //Inject lense Option in HTML
     const optionsLense = () => {
     
             return camera.lenses.map((element, index) => (
              `<option value= ${index}> ${element}</option>`))
             };
 
-//inject camera data into html
+    //inject camera data into html
     specifics.innerHTML = (
         
         ` 
         <h2 class="text-center my-4" id="camera-name">${camera.name}</h2>
-        <div class="flex-sm-column flex-md-row d-flex justify-content-around">
-            <div class="col-5">
+        <div class="flex-column flex-md-row d-flex justify-content-around">
+            <div class="col-5 align-self-center">
                 <img id="camera-image" src="${camera.imageUrl}" width="100%">
             </div>
-            <div class="col-3 align-self-center d-flex flex-column ">
+            <div class="col-9 col-md-3 align-self-center d-flex flex-column ">
                 <p class="my-4">${camera.description}</p>
                 <select id="camera-lenses" class="form-select">
                     ${optionsLense()}
@@ -45,12 +44,11 @@ try{
       
     )
 }
-
+//Inform the User that the server is not active
 catch(err){
    alert(err.message);
 }
 };
-
 
 showSpecifics();
 
@@ -59,15 +57,18 @@ function spacedNumber(x){
 	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
-//Camera count
-//Retrieve camera quantity
+//Retrieve and Prevent Wrong input of Camera Quantity
 let cameraQuantity = 1;
 function cameraCount(val) {
-    cameraQuantity = val;
-    return cameraQuantity;
-  }
+    if (isNaN(val) || val <= 0){
+        val = 1
+        return val
+    }
+        cameraQuantity = val;
+        return cameraQuantity;
+    }
 
-//add to local storage and alert user
+//Add items to local storage and alert user
 const basket = 
    document.getElementById("camera-buy").addEventListener("click", function() 
     {
@@ -76,7 +77,7 @@ const basket =
         {
             ids: id,
             lenses: parseInt(document.getElementById('camera-lenses').value),
-            quantities: cameraQuantity,
+            quantities: cameraCount(),
         };
         if (localStorage.getItem('cameraBasket') == null )
         {
@@ -91,7 +92,7 @@ const basket =
             localStorage.setItem('cameraBasket', JSON.stringify(previousBasket));
         }
 
-        alert(`${cameraQuantity} ${document.getElementById('camera-name').innerText} ajouté au panier`);
+        alert(`${cameraCount()} ${document.getElementById('camera-name').innerText} ajouté au panier`);
     });
 
 

@@ -13,10 +13,10 @@ try{
 
 //Inject cameras data into html
     catalog.innerHTML = (
-
+        //Create a camera card for each camera in the API
         cameras.map(camera => (
               ` 
-                <li class="camera-item card col-sm-12 col-md-4 m-1 rounded">
+                <li class="camera-item card col-sm-12 col-md-4 m-1 border-1 border-primary rounded">
                   <img class="camera-img card-img-top" height="248px" src="${camera.imageUrl}" />
                   <div class="camera-info card-body text-center">
                     <h2 class="camera-name">${camera.name}</h2>

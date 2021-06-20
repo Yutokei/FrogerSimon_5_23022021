@@ -14,6 +14,7 @@ const showBasket = async() => {
 
     let cameraLocalBasket = JSON.parse(localStorage.getItem('cameraBasket'));
 
+//Inform User if the basket is empty
 if (cameraLocalBasket == null)
 {
     let emptyBasket = document.createElement('li')
@@ -21,6 +22,7 @@ if (cameraLocalBasket == null)
     emptyBasket.innerText = 'Votre Panier est vide'
     CameraActualBasket.appendChild(emptyBasket)
 }
+//Retrieve Items from the basket and inject it in HTML
 else
 {cameraLocalBasket.forEach((basket) => {
     cameras.forEach((camera) =>{
@@ -28,38 +30,37 @@ else
         {
             //Create HTML element
 let cameraLi = document.createElement('li')
-cameraLi.setAttribute('class', "d-flex justify-content-around border rounded my-3")
+cameraLi.setAttribute('class', "basket-item container d-flex flex-wrap justify-content-around border border-primary rounded padding-1 my-3")
 CameraActualBasket.appendChild(cameraLi)
 
-let imageDiv = document.createElement('div')
-imageDiv.setAttribute('class', "border d-flex justify-content-between")
-cameraLi.appendChild(imageDiv)
+let cameraSummary = document.createElement('div')
+cameraSummary.setAttribute('class', "border d-flex flex-column rounded justify-content-between")
+cameraLi.appendChild(cameraSummary)
 
 let cameraNameSpan = document.createElement('span')
 cameraNameSpan.setAttribute('class', "border align-self-center fw-bold")
 cameraNameSpan.innerText = camera.name
-imageDiv.appendChild(cameraNameSpan)
-
-let cameraImageImg = document.createElement('img')
-cameraImageImg.setAttribute('src', camera.imageUrl)
-cameraImageImg.setAttribute('width', '60px')
-imageDiv.appendChild(cameraImageImg)
-
+cameraSummary.appendChild(cameraNameSpan)
 
 let cameraLenseSpan = document.createElement('span')
 cameraLenseSpan.setAttribute('class', "border align-self-center fw-bold")
 cameraLenseSpan.innerText = 'Lentille : ' + camera.lenses[basket.lenses]
-cameraLi.appendChild(cameraLenseSpan)
+cameraSummary.appendChild(cameraLenseSpan)
 
-let cameraQuantitySpan = document.createElement('span')
-cameraQuantitySpan.setAttribute('class', "border align-self-center fw-bold")
-cameraQuantitySpan.innerText = 'Quantité : ' + basket.quantities
-cameraLi.appendChild(cameraQuantitySpan)
+let cameraImageImg = document.createElement('img')
+cameraImageImg.setAttribute('src', camera.imageUrl)
+cameraImageImg.setAttribute('width', '60px')
+cameraLi.appendChild(cameraImageImg)
 
 let cameraPriceSpan = document.createElement('span')
-cameraPriceSpan.setAttribute('class', "border align-self-center fw-bold")
-cameraPriceSpan.innerText = 'Sous-total : ' + spacedNumber(camera.price) + ' €'
+cameraPriceSpan.setAttribute('class', "camera-price border align-self-center fw-bold")
+cameraPriceSpan.innerText = 'Prix : ' + spacedNumber(camera.price) + ' €'
 cameraLi.appendChild(cameraPriceSpan)
+
+let cameraQuantitySpan = document.createElement('span')
+cameraQuantitySpan.setAttribute('class', "camera-quantity border align-self-center fw-bold")
+cameraQuantitySpan.innerText = 'Quantité : ' + basket.quantities
+cameraLi.appendChild(cameraQuantitySpan)
 
 let cameraTotalSpan = document.createElement('span')
 cameraTotalSpan.setAttribute('class', "border align-self-center fw-bold")
@@ -67,53 +68,68 @@ cameraTotalSpan.innerText = 'Total : ' + spacedNumber(camera.price*basket.quanti
 cameraLi.appendChild(cameraTotalSpan)
 
 let createButton = document.createElement('button')
-createButton.setAttribute('class', "camera-remove btn btn-outline-danger")
-createButton.setAttribute('id', "remove-item")
+createButton.setAttribute('class', "camera-remove btn btn-outline-danger my-1")
 createButton.innerText = 'Supprimer'
 cameraLi.appendChild(createButton)
         }
     })
 
 })
+//Remove from Basket Function
+let removeButtons = document.getElementsByClassName('camera-remove');
+for (let i = 0; i < removeButtons.length; i++){
+    let button = removeButtons[i]
+    button.addEventListener('click', function(event){
+       let buttonClicked = event.target;
+       buttonClicked.parentElement.remove()
+       updateTotalPrice()
+    })
+}
+//Show Total Price Function
+function updateTotalPrice(){
+  let basketItems = CameraActualBasket.getElementsByClassName('basket-item')
+  let total = 0
+  for (var i = 0; i < basketItems.length; i++) {
+      let basketItem = basketItems[i]
+      let priceItem = basketItem.getElementsByClassName('camera-price')[0];
+      let quantityItem = basketItem.getElementsByClassName('camera-quantity')[0];
+      let price = priceItem.innerText.replace(/\D+/g, '');
+      let quantity = quantityItem.innerText.replace(/\D+/g, '');
+      total = total + (price * quantity);
+  }
+  document.getElementById('total-price').innerText = 'Sous-Total : ' + spacedNumber(total) + ' €'
+}
+updateTotalPrice()
+//Create the Order Form
 orderForm.innerHTML =
-(
-    `
-        <div class="form-group col-6 my-2">
-            <label for="nom">Nom</label>
-            <input type="text" class="form-control" id="nom" placeholder=" Dupont" required>
-        </div>
-        <div class="col-6 my-2">
-            <label for="Prénom">Prénom</label>
-            <input type="text" class="form-control" id="Prénom" placeholder=" Nicolas" required>
-        </div>
-        <div class="form-group col-6 my-2">
-            <label for="Email utilisateur">Adresse Email</label>
-            <input type="email" class="form-control" id="Email utilisateur" aria-describedby="emailHelp" placeholder=" nicolasdupont@monmail.fr" required>
-        </div>
-        <div class="col-6 my-2">
-            <label for="Adresse">Adresse</label>
-            <input type="text" class="form-control" id="Adresse" placeholder=" 12 rue Tessereau La Rochelle" required>
-        </div>
-        <div class="col-6 my-2">
-            <label for="code-postale">Code Postale</label>
-            <input pattern="[0-9]{5}" class="form-control" type="text"  placeholder=" 37000" required/>
-        </div>
-        <button type="submit" class="btn btn-primary my-2" id="confirm-order">Je confirme ma commande</button>
-    
-    `
-)
-}
-}
-
-showBasket();
-
-//split the number into thousands
-function spacedNumber(x){
-	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-}
-
-// Verify input of the form
-document.getElementById('confirm-order').addEventListener("click",function(){
+    (
+        `
+            <div class="form-group col-10 col-md-6 my-2">
+                <label for="nom">Nom</label>
+                <input type="text" class="form-control" id="lastName" placeholder=" Dupont" value="" required>
+            </div>
+            <div class="col-10 col-md-6 my-2">
+                <label for="Prénom">Prénom</label>
+                <input type="text" class="form-control" id="firstName" placeholder=" Nicolas" value="" required>
+            </div>
+            <div class="form-group col-10 col-md-6 my-2">
+                <label for="Email utilisateur">Adresse Email</label>
+                <input type="email" class="form-control" id="User Email" aria-describedby="emailHelp" placeholder=" nicolasdupont@monmail.fr" value="" required>
+            </div>
+            <div class="col-10 col-md-6 my-2">
+                <label for="Adresse">Adresse</label>
+                <input type="text" class="form-control" id="address" placeholder=" 12 rue Tessereau" value="" required>
+            </div>
+            <div class="col-10 col-md-6 my-2">
+                <label for="Ville">Ville</label>
+                <input type="text" class="form-control" id="city" placeholder="La Rochelle" value="" required>
+            </div>
+            <input type="button" class="btn btn-primary my-2" id="confirm-order" value="Je confirme ma commande">
+        
+        `
+    )
+// Verify input of the form and alert the User of wich input is not valid
+document.querySelector('.form input[type="button"]').addEventListener("click",function(){
     let valid = true;
     for(let input of document.querySelectorAll('.form-control'))
     {
@@ -122,21 +138,34 @@ document.getElementById('confirm-order').addEventListener("click",function(){
            break;
        }
     }
-    if(valid)[
-        alert("Panier validé")
-    ]
+    //Create an Array with the User Info and Order and Post it to the API
+    if(valid){
+        alert("Panier validé");
+      let userInfo =  [
+                        Array.from(document.querySelectorAll('#orderForm input')).reduce((acc, input) =>({...acc, [input.id]: input.value}), {}),
+
+                        cameraLocalBasket
+                      ]
+        const orderPost = async() =>{
+            try{
+            fetch('http://localhost:3000/api/cameras/order',{
+            method: 'post',
+            body: userInfo})}
+
+            catch(err){
+                alert(err.message)
+            }
+        }
+        orderPost();
+    }  
 })
-//Reunite the data to post to the API
-let orderPost =[
-    document.querySelectorAll.input('.form-control'),
-    camera.id + camera.quantity,
-]
-/*
-//Post Form and Order to API
-const postResponse = await fetch('http://localhost:3000/api/cameras/',
-{
-    method: 'POST',
-    body: JSON.stringify(orderPost),
-})
-const Post = await response.json();
-*/
+}
+}
+
+showBasket();
+
+
+//split the number into thousands
+function spacedNumber(x){
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
