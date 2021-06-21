@@ -62,9 +62,9 @@ let cameraQuantity = 1;
 function cameraCount(val) {
     if (isNaN(val) || val <= 0){
         val = 1
-        return val
     }
         cameraQuantity = val;
+        console.log(cameraQuantity)
         return cameraQuantity;
     }
 
@@ -72,12 +72,11 @@ function cameraCount(val) {
 const basket = 
    document.getElementById("camera-buy").addEventListener("click", function() 
     {
-        cameraQuantity = parseInt(document.getElementById('camera-quantity').value);
         let cameraObject = 
         {
             ids: id,
             lenses: parseInt(document.getElementById('camera-lenses').value),
-            quantities: cameraCount(),
+            quantities: cameraCount(cameraQuantity),
         };
         if (localStorage.getItem('cameraBasket') == null )
         {
@@ -92,7 +91,7 @@ const basket =
             localStorage.setItem('cameraBasket', JSON.stringify(previousBasket));
         }
 
-        alert(`${cameraCount()} ${document.getElementById('camera-name').innerText} ajouté au panier`);
+        alert(`${cameraQuantity} ${document.getElementById('camera-name').innerText} ajouté au panier`);
     });
 
 

@@ -3,7 +3,8 @@ const CameraActualBasket = document.getElementById('basket-content');
 const orderForm = document.getElementById('orderForm')
 //initialise cameras data 
 let cameras;
-
+//Retrieve Item from the localStorage
+let cameraLocalBasket = JSON.parse(localStorage.getItem('cameraBasket'));
 
 //API Request for specific camera
 
@@ -12,7 +13,7 @@ const showBasket = async() => {
     const cameras = await response.json();
 
 
-    let cameraLocalBasket = JSON.parse(localStorage.getItem('cameraBasket'));
+
 
 //Inform User if the basket is empty
 if (cameraLocalBasket == null)
@@ -24,7 +25,7 @@ if (cameraLocalBasket == null)
 }
 //Retrieve Items from the basket and inject it in HTML
 else
-{cameraLocalBasket.forEach((basket) => {
+{cameraLocalBasket.forEach((basket, index) => {
     cameras.forEach((camera) =>{
         if(camera._id == basket.ids)
         {
@@ -32,6 +33,12 @@ else
 let cameraLi = document.createElement('li')
 cameraLi.setAttribute('class', "basket-item container d-flex flex-wrap justify-content-around border border-primary rounded padding-1 my-3")
 CameraActualBasket.appendChild(cameraLi)
+
+let cameraIndexSpan = document.createElement('span')
+cameraIndexSpan.setAttribute('class', "border align-self-center fw-bold")
+cameraIndexSpan.setAttribute('id', "basket-index")
+cameraIndexSpan.innerText = index
+cameraLi.appendChild(cameraIndexSpan)
 
 let cameraSummary = document.createElement('div')
 cameraSummary.setAttribute('class', "border d-flex flex-column rounded justify-content-between")
@@ -77,10 +84,18 @@ cameraLi.appendChild(createButton)
 })
 //Remove from Basket Function
 let removeButtons = document.getElementsByClassName('camera-remove');
+let cameraIndex = document.getElementById('basket-index').innerText
 for (let i = 0; i < removeButtons.length; i++){
     let button = removeButtons[i]
     button.addEventListener('click', function(event){
        let buttonClicked = event.target;
+       cameraLocalBasket.splice(cameraIndex, 1);
+       /*if(localStorage.getItem('cameraBasket') == null){
+        localStorage.removeItem('cameraBasket')
+       }
+       else{
+           localStorage.setItem('cameraBasket', cameraLocalBasket)
+        }*/
        buttonClicked.parentElement.remove()
        updateTotalPrice()
     })
@@ -104,25 +119,25 @@ updateTotalPrice()
 orderForm.innerHTML =
     (
         `
-            <div class="form-group col-10 col-md-6 my-2">
-                <label for="nom">Nom</label>
-                <input type="text" class="form-control" id="lastName" placeholder=" Dupont" value="" required>
-            </div>
             <div class="col-10 col-md-6 my-2">
                 <label for="Prénom">Prénom</label>
                 <input type="text" class="form-control" id="firstName" placeholder=" Nicolas" value="" required>
             </div>
             <div class="form-group col-10 col-md-6 my-2">
+                <label for="nom">Nom</label>
+                <input type="text" class="form-control" id="lastName" placeholder=" Dupont" value="" required>
+            </div>
+            <div class="col-10 col-md-6 my-2">
+            <label for="Adresse">Adresse</label>
+            <input type="text" class="form-control" id="address" placeholder=" 12 rue Tessereau" value="" required>
+            </div>
+            <div class="col-10 col-md-6 my-2">
+            <label for="Ville">Ville</label>
+            <input type="text" class="form-control" id="city" placeholder="La Rochelle" value="" required>
+            </div>
+            <div class="form-group col-10 col-md-6 my-2">
                 <label for="Email utilisateur">Adresse Email</label>
-                <input type="email" class="form-control" id="User Email" aria-describedby="emailHelp" placeholder=" nicolasdupont@monmail.fr" value="" required>
-            </div>
-            <div class="col-10 col-md-6 my-2">
-                <label for="Adresse">Adresse</label>
-                <input type="text" class="form-control" id="address" placeholder=" 12 rue Tessereau" value="" required>
-            </div>
-            <div class="col-10 col-md-6 my-2">
-                <label for="Ville">Ville</label>
-                <input type="text" class="form-control" id="city" placeholder="La Rochelle" value="" required>
+                <input type="email" class="form-control" id="Email" aria-describedby="emailHelp" placeholder=" nicolasdupont@monmail.fr" value="" required>
             </div>
             <input type="button" class="btn btn-primary my-2" id="confirm-order" value="Je confirme ma commande">
         
@@ -140,17 +155,15 @@ document.querySelector('.form input[type="button"]').addEventListener("click",fu
     }
     //Create an Array with the User Info and Order and Post it to the API
     if(valid){
-        alert("Panier validé");
-      let userInfo =  [
-                        Array.from(document.querySelectorAll('#orderForm input')).reduce((acc, input) =>({...acc, [input.id]: input.value}), {}),
-
-                        cameraLocalBasket
-                      ]
+        alert("Panier validé"); 
+                    let contact = Array.from(document.querySelectorAll('#orderForm input')).reduce((acc, input) =>({...acc, [input.id]: input.value}), {})
+                    let products = cameraLocalBasket
+                      console.log(contact)
         const orderPost = async() =>{
             try{
             fetch('http://localhost:3000/api/cameras/order',{
             method: 'post',
-            body: userInfo})}
+            body: contact + products})}
 
             catch(err){
                 alert(err.message)
