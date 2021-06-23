@@ -1,10 +1,9 @@
+
 //get the html tag to inject the cameras cards
 const CameraActualBasket = document.getElementById('basket-content');
 const orderForm = document.getElementById('orderForm')
 //initialise cameras data 
 let cameras;
-//Retrieve Item from the localStorage
-let cameraLocalBasket = JSON.parse(localStorage.getItem('cameraBasket'));
 
 //API Request for specific camera
 
@@ -16,6 +15,8 @@ const showBasket = async() => {
 
 
 //Inform User if the basket is empty
+//Retrieve Item from the localStorage
+let cameraLocalBasket = JSON.parse(localStorage.getItem('cameraBasket'));
 if (cameraLocalBasket == null)
 {
     let emptyBasket = document.createElement('li')
@@ -32,11 +33,11 @@ else
             //Create HTML element
 let cameraLi = document.createElement('li')
 cameraLi.setAttribute('class', "basket-item container d-flex flex-wrap justify-content-around border border-primary rounded padding-1 my-3")
+cameraLi.setAttribute('id', index)
 CameraActualBasket.appendChild(cameraLi)
 
 let cameraIndexSpan = document.createElement('span')
-cameraIndexSpan.setAttribute('class', "border align-self-center fw-bold")
-cameraIndexSpan.setAttribute('id', "basket-index")
+cameraIndexSpan.setAttribute('class', "border align-self-center fw-bold basket-index")
 cameraIndexSpan.innerText = index
 cameraLi.appendChild(cameraIndexSpan)
 
@@ -84,21 +85,27 @@ cameraLi.appendChild(createButton)
 })
 //Remove from Basket Function
 let removeButtons = document.getElementsByClassName('camera-remove');
-let cameraIndex = document.getElementById('basket-index').innerText
 for (let i = 0; i < removeButtons.length; i++){
     let button = removeButtons[i]
+    let cameraIndex = button.parentElement.childNodes[0].innerText
+    console.log(cameraIndex)
     button.addEventListener('click', function(event){
-       let buttonClicked = event.target;
-       cameraLocalBasket.splice(cameraIndex, 1);
-       /*if(localStorage.getItem('cameraBasket') == null){
+        console.log(event.target.id)
+        cameraLocalBasket.splice(cameraIndex, 1);
+        button.parentElement.remove()
+        console.log(JSON.parse(localStorage.getItem('cameraBasket')).length)
+       if(JSON.parse(localStorage.getItem('cameraBasket')).length <= 1){
         localStorage.removeItem('cameraBasket')
+        orderForm.innerHTML = ''
        }
        else{
-           localStorage.setItem('cameraBasket', cameraLocalBasket)
-        }*/
-       buttonClicked.parentElement.remove()
-       updateTotalPrice()
+           localStorage.setItem('cameraBasket', JSON.stringify(cameraLocalBasket))
+        }
+        CameraActualBasket.innerHTML = '';
+        console.log(cameraLocalBasket);
+        showBasket();
     })
+    
 }
 //Show Total Price Function
 function updateTotalPrice(){
@@ -139,12 +146,12 @@ orderForm.innerHTML =
                 <label for="Email utilisateur">Adresse Email</label>
                 <input type="email" class="form-control" id="Email" aria-describedby="emailHelp" placeholder=" nicolasdupont@monmail.fr" value="" required>
             </div>
-            <input type="button" class="btn btn-primary my-2" id="confirm-order" value="Je confirme ma commande">
+            <button type="button" class="btn btn-primary my-2" id="confirm-order">Je confirme ma commande</button>
         
         `
     )
 // Verify input of the form and alert the User of wich input is not valid
-document.querySelector('.form input[type="button"]').addEventListener("click",function(){
+document.querySelector('.form button[type="button"]').addEventListener("click",function(){
     let valid = true;
     for(let input of document.querySelectorAll('.form-control'))
     {
@@ -158,12 +165,16 @@ document.querySelector('.form input[type="button"]').addEventListener("click",fu
         alert("Panier validé"); 
                     let contact = Array.from(document.querySelectorAll('#orderForm input')).reduce((acc, input) =>({...acc, [input.id]: input.value}), {})
                     let products = cameraLocalBasket
-                      console.log(contact)
+                    let order = {
+                        contact,
+                        products
+                    }
+                      console.log(order)
         const orderPost = async() =>{
             try{
             fetch('http://localhost:3000/api/cameras/order',{
             method: 'post',
-            body: contact + products})}
+            body: order})}
 
             catch(err){
                 alert(err.message)
@@ -182,3 +193,6 @@ showBasket();
 function spacedNumber(x){
 	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
+
+
+
