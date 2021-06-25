@@ -5,7 +5,7 @@ const id = getId.replace("?id=","");
 //get the html tag to inject the camera card
 const specifics = document.getElementById('camera-specifics')
 let camera;
-let cameraLenses;
+
 
 
 //API Request for specific camera
@@ -25,19 +25,17 @@ try{
     specifics.innerHTML = (
         
         ` 
-        <h2 class="text-center my-4" id="camera-name">${camera.name}</h2>
+        <h2 class="text-center my-3" id="camera-name">${camera.name}</h2>
         <div class="flex-column flex-md-row d-flex justify-content-around">
-            <div class="col-5 align-self-center">
+            <div class="col-11 col-md-6 align-self-center">
                 <img id="camera-image" src="${camera.imageUrl}" width="100%">
             </div>
             <div class="col-9 col-md-3 align-self-center d-flex flex-column ">
-                <p class="my-4">${camera.description}</p>
+                <p class="my-auto">${camera.description}</p>
                 <select id="camera-lenses" class="form-select">
                     ${optionsLense()}
-
                 </select>
-
-                <span class="text-center id="camera-price" my-4">${spacedNumber(camera.price)} €</span>
+                <span class="text-center id="camera-price" my-auto">${spacedNumber(camera.price)} €</span>
             </div>
         </div>
       `
@@ -60,8 +58,10 @@ function spacedNumber(x){
 //Retrieve and Prevent Wrong input of Camera Quantity
 let cameraQuantity = 1;
 function cameraCount(val) {
+    //If the Quantity is not a number, return 1
     if (isNaN(val) || val <= 0){
         val = 1
+        document.getElementById('camera-quantity').value = val
     }
         cameraQuantity = val;
         console.log(cameraQuantity)
@@ -78,11 +78,13 @@ const basket =
             lenses: parseInt(document.getElementById('camera-lenses').value),
             quantities: cameraCount(cameraQuantity),
         };
+        //Create an array if there is none
         if (localStorage.getItem('cameraBasket') == null )
         {
             let cameraObjectArray = [cameraObject];
             localStorage.setItem('cameraBasket', JSON.stringify(cameraObjectArray));
         }
+        //Add to the array if there is one already
         else
         {        
             let previousBasket = JSON.parse(localStorage.getItem('cameraBasket'));
@@ -90,12 +92,6 @@ const basket =
             previousBasket.push(cameraObject);
             localStorage.setItem('cameraBasket', JSON.stringify(previousBasket));
         }
-
+        //Inform user of the item added to the basket
         alert(`${cameraQuantity} ${document.getElementById('camera-name').innerText} ajouté au panier`);
     });
-
-
-
-
-
-

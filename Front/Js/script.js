@@ -1,9 +1,5 @@
 //get the html tag to inject the cameras cards
 const catalog = document.getElementById('catalog');
-//initialise cameras data 
-let cameras;
-
-
 
 // API Request for all cameras
 const showCameras = async() => {
@@ -41,5 +37,3 @@ showCameras();
 function spacedNumber(x){
 	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
-
-
