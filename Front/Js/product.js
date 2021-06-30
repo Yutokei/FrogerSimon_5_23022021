@@ -9,7 +9,7 @@ let camera;
 
 
 //API Request for specific camera
-const showSpecifics = async() => {
+const product = async() => {
 try{       
     const response = await fetch('http://localhost:3000/api/cameras/' + id)
     const camera = await response.json();
@@ -23,7 +23,6 @@ try{
 
     //inject camera data into html
     specifics.innerHTML = (
-        
         ` 
         <h2 class="text-center my-3" id="camera-name">${camera.name}</h2>
         <div class="flex-column flex-md-row d-flex justify-content-around">
@@ -39,7 +38,6 @@ try{
             </div>
         </div>
       `
-      
     )
 }
 //Inform the User that the server is not active
@@ -48,12 +46,7 @@ catch(err){
 }
 };
 
-showSpecifics();
-
-//Create a space for the Thousand
-function spacedNumber(x){
-	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-}
+product();
 
 //Retrieve and Prevent Wrong input of Camera Quantity
 let cameraQuantity = 1;
@@ -64,7 +57,6 @@ function cameraCount(val) {
         document.getElementById('camera-quantity').value = val
     }
         cameraQuantity = val;
-        console.log(cameraQuantity)
         return cameraQuantity;
     }
 
@@ -72,7 +64,7 @@ function cameraCount(val) {
 const basket = 
    document.getElementById("camera-buy").addEventListener("click", function() 
     {
-        let cameraObject = 
+        const cameraObject = 
         {
             ids: id,
             lenses: parseInt(document.getElementById('camera-lenses').value),
@@ -81,13 +73,13 @@ const basket =
         //Create an array if there is none
         if (localStorage.getItem('cameraBasket') == null )
         {
-            let cameraObjectArray = [cameraObject];
+            const cameraObjectArray = [cameraObject];
             localStorage.setItem('cameraBasket', JSON.stringify(cameraObjectArray));
         }
         //Add to the array if there is one already
         else
         {        
-            let previousBasket = JSON.parse(localStorage.getItem('cameraBasket'));
+            const previousBasket = JSON.parse(localStorage.getItem('cameraBasket'));
             
             previousBasket.push(cameraObject);
             localStorage.setItem('cameraBasket', JSON.stringify(previousBasket));
