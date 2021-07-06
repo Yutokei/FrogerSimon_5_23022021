@@ -1,26 +1,47 @@
+@font-face {
+    font-family: Harukaze;
+    src: url(/Front/css/font/Harukaze.otf);
+}
+
+.navbar
+{
+    padding-bottom: 0rem;
+}
+
+.navbar-brand
+{
+    font-family: Harukaze !important;
+    font-size: 2rem;
+    padding: 0rem !important;
+}
+
 body
 {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
+
+footer
+{
+    margin-top: auto;
+}
+
 .camera-item
 {
     width: 25rem;
 }
+
 span.border
 {
     min-width: 150px;
 }
+
 div.border
 {
     min-width: 250px;
 }
-footer
-{
-    box-sizing: none;
-    margin-top: auto;
-}
+
 #camera-specifics
 {
     font-size: larger;
