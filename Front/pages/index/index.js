@@ -24,7 +24,7 @@ const products = async () => {
                       <span class="camera-price mx-1">${spacedNumber(
                         camera.price
                       )} €</span>
-                      <a href="product.html?id=${
+                      <a href="../product/product.html?id=${
                         camera._id
                       }" class="btn btn-outline-info camera-buy stretched-link mx-1">Plus d'infos</a>
                     </div>
