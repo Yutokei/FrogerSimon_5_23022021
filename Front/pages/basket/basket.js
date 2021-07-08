@@ -78,7 +78,7 @@ const showBasket = async () => {
                       "."
                   );
                   //Redirect to the Confirmed Page and retrieve Order Id
-                  window.location.href = `confirmedbasket.html?${json.orderId}`;
+                  window.location.href = `../confirmedbasket/confirmedbasket.html?${json.orderId}`;
                 });
             } catch (err) {
               //Inform the User that the server is not active
