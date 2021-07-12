@@ -31,9 +31,7 @@ const productId = async () => {
                 <select id="camera-lenses" class="form-select">
                     ${optionsLense()}
                 </select>
-                <span class="text-center id="camera-price" my-auto">${spacedNumber(
-                  camera.price
-                )} €</span>
+                <span class="text-center id="camera-price" my-auto">${spacedNumber(camera.price)} €</span>
             </div>
         </div>
       `;
