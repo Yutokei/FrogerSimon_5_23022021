@@ -1,7 +1,6 @@
 //get the html tag to inject the cameras cards
 const cameraActualBasket = document.getElementById("basket-content");
 const orderForm = document.getElementById("orderForm");
-//Import Function to Create HTML cards for Items
 
 //initialise cameras data
 let idArray;
