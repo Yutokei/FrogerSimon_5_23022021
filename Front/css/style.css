@@ -51,4 +51,8 @@ div.border
 {
     width: 10rem;
 }
-         
+
+#orderForm
+{
+    display: none;
+}

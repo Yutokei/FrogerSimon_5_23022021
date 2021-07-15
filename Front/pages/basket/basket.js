@@ -31,8 +31,8 @@ const showBasket = async () => {
     //Show Total Price Function
     updateTotalPrice();
 
-    //Create the Order Form
-    createForm(orderForm);
+    //Display the Contact form
+    orderForm.style.display = "block";
 
     // Verify input of the form and alert the User of wich input is not valid
     document

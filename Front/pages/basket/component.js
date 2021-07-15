@@ -100,35 +100,6 @@ function cameraCards(basketItems, items) {
     });
   });
 }
-// //////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//Create the Order Form
-function createForm(form) {
-  form.innerHTML = `
-            <div class="col-10 col-md-6 my-2">
-                <label for="Prénom">Prénom</label>
-                <input type="text" class="form-control" id="firstName" placeholder=" Nicolas" value="" required>
-            </div>
-            <div class="form-group col-10 col-md-6 my-2">
-                <label for="nom">Nom</label>
-                <input type="text" class="form-control" id="lastName" placeholder=" Dupont" value="" required>
-            </div>
-            <div class="col-10 col-md-6 my-2">
-            <label for="Adresse">Adresse</label>
-            <input type="text" class="form-control" id="address" placeholder=" 12 rue Tessereau" value="" required>
-            </div>
-            <div class="col-10 col-md-6 my-2">
-            <label for="Ville">Ville</label>
-            <input type="text" class="form-control" id="city" placeholder="La Rochelle" value="" required>
-            </div>
-            <div class="form-group col-10 col-md-6 my-2">
-                <label for="Email utilisateur">Adresse Email</label>
-                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder=" nicolasdupont@monmail.fr" value="" required>
-            </div>
-            <button type="button" class="btn btn-primary my-2" id="confirm-order">Je confirme ma commande</button>
-        
-        `;
-}
 
 // //////////////////////////////////////////////////////////////////////////////////////////////////////
 
